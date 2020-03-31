@@ -27,6 +27,6 @@ func index(c *cli.Context) error {
 	cmd.Run()
 	
 	fullCmd := strings.Join(c.Args().Slice(), " ")
-	client.Email(fmt.Sprintf("✔ %s", fullCmd), "123")
+	client.Email(fmt.Sprintf("✅ %s", fullCmd), "123")
 	return nil
 }
