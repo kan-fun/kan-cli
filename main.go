@@ -11,7 +11,6 @@ import (
 )
 
 var configFilePath string
-var client *kan_sdk.Client
 
 func init() {
 	homeDir, err := os.UserHomeDir()
@@ -36,16 +35,30 @@ func init() {
 	if err != nil {            // Handle errors reading the config file
 		panic(err)
 	}
+}
 
+func initClient() (client *kan_sdk.Client, err error) {
 	AccessKey := viper.GetString("access-key")
 	SecretKey := viper.GetString("secret-key")
 
-	clientLocal, err := kan_sdk.NewClient(AccessKey, SecretKey)
+	client, err = kan_sdk.NewClient(AccessKey, SecretKey)
 	if err != nil {
 		panic(err)
 	}
 
-	client = clientLocal
+	return
+}
+
+func initLogClient(topic string) (client *kan_sdk.LogClient, err error) {
+	AccessKey := viper.GetString("access-key")
+	SecretKey := viper.GetString("secret-key")
+
+	client, err = kan_sdk.NewLogClient(AccessKey, SecretKey, topic)
+	if err != nil {
+		panic(err)
+	}
+
+	return
 }
 
 func main() {
