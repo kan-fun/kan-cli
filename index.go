@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -9,50 +11,53 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func consCmd(c *cli.Context) *exec.Cmd {
+func index(c *cli.Context) (err error) {
+	isPro := c.Bool("pro")
+
 	first := c.Args().First()
 	tail := c.Args().Tail()
 
-	cmd := exec.Command(first, tail...)
-
-	return cmd
-}
-
-func index(c *cli.Context) (err error) {
-	proFlag := c.Bool("pro")
 	fullCmd := strings.Join(c.Args().Slice(), " ")
 
-	logClient, err := initLogClient(fullCmd, proFlag)
+	logClient, err := initLogClient(fullCmd, isPro)
 	if err != nil {
 		return
 	}
 
-	if proFlag {
-		println("====🚀 kan Pro 🚀====")
+	if isPro {
+		log.Println("====🚀 kan Pro 🚀====")
 	} else {
-		println("====😃 kan Basic 😃====")
+		log.Println("====😃 kan Basic 😃====")
 	}
 
-	cmd := consCmd(c)
-	cmd.Stderr = os.Stderr
+	cmd := exec.Command(first, tail...)
 
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return
-	}
+	if isPro {
+		var stdout io.ReadCloser
 
-	cmd.Start()
+		cmd.Stderr = os.Stderr
 
-	scanner := bufio.NewScanner(stdout)
-	for scanner.Scan() {
-		line := scanner.Text()
-		println(line)
-		if proFlag {
+		stdout, err = cmd.StdoutPipe()
+		if err != nil {
+			return
+		}
+
+		cmd.Start()
+
+		scanner := bufio.NewScanner(stdout)
+		for scanner.Scan() {
+			line := scanner.Text()
+			println(line)
 			logClient.PubLog(line)
 		}
+
+		err = cmd.Wait()
+	} else {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		err = cmd.Run()
 	}
 
-	err = cmd.Wait()
 	logClient.CloseLog(err == nil)
 
 	return nil
