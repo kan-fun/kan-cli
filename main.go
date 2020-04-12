@@ -50,11 +50,11 @@ func initClient() (client *kan_sdk.Client, err error) {
 	return
 }
 
-func initLogClient(topic string) (client *kan_sdk.LogClient, err error) {
+func initLogClient(topic string, isPro bool) (client *kan_sdk.LogClient, err error) {
 	AccessKey := viper.GetString("access-key")
 	SecretKey := viper.GetString("secret-key")
 
-	client, err = kan_sdk.NewLogClient(AccessKey, SecretKey, topic)
+	client, err = kan_sdk.NewLogClient(AccessKey, SecretKey, topic, isPro)
 	if err != nil {
 		panic(err)
 	}

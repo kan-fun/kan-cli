@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -19,13 +18,20 @@ func consCmd(c *cli.Context) *exec.Cmd {
 	return cmd
 }
 
-func indexPro(c *cli.Context, topic string) (err error) {
-	logClient, err := initLogClient(topic)
+func index(c *cli.Context) (err error) {
+	proFlag := c.Bool("pro")
+	fullCmd := strings.Join(c.Args().Slice(), " ")
+
+	logClient, err := initLogClient(fullCmd, proFlag)
 	if err != nil {
 		return
 	}
 
-	println("Start Pro")
+	if proFlag {
+		println("====🚀 kan Pro 🚀====")
+	} else {
+		println("====😃 kan Basic 😃====")
+	}
 
 	cmd := consCmd(c)
 	cmd.Stderr = os.Stderr
@@ -41,34 +47,13 @@ func indexPro(c *cli.Context, topic string) (err error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		println(line)
-		logClient.PubLog(line)
+		if proFlag {
+			logClient.PubLog(line)
+		}
 	}
 
 	err = cmd.Wait()
 	logClient.CloseLog(err == nil)
 
-	return nil
-}
-
-func index(c *cli.Context) (err error) {
-	recordFlag := c.Bool("pro")
-	fullCmd := strings.Join(c.Args().Slice(), " ")
-
-	if recordFlag {
-		return indexPro(c, fullCmd)
-	}
-
-	client, err := initClient()
-	if err != nil {
-		return
-	}
-
-	cmd := consCmd(c)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Run()
-
-	client.Email(fmt.Sprintf("✅ %s", fullCmd), "")
 	return nil
 }
