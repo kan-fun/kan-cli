@@ -74,6 +74,8 @@ github.com/kan-fun/kan-sdk-go v0.0.0-20200409090606-84343392b3fe h1:ewfk67VdxPfn
 github.com/kan-fun/kan-sdk-go v0.0.0-20200409090606-84343392b3fe/go.mod h1:9JZ/x8hS2Ij00b5FwIzshYN8v00LOYftpvC0WrziLys=
 github.com/kan-fun/kan-sdk-go v0.0.0-20200411235509-e7b626ea0785 h1:Maur8QFBthNZC6JGSbi58LpqBmc2aDVdnz5xxUmB+R8=
 github.com/kan-fun/kan-sdk-go v0.0.0-20200411235509-e7b626ea0785/go.mod h1:9JZ/x8hS2Ij00b5FwIzshYN8v00LOYftpvC0WrziLys=
+github.com/kan-fun/kan-sdk-go v0.0.0-20200415231504-2d6df6e8d77c h1:vbhpaZNHeOuW6K4/M0wX9BJUvNAKWmcOKGukz72cnD0=
+github.com/kan-fun/kan-sdk-go v0.0.0-20200415231504-2d6df6e8d77c/go.mod h1:9JZ/x8hS2Ij00b5FwIzshYN8v00LOYftpvC0WrziLys=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
