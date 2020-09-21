@@ -6,6 +6,7 @@ require (
 	github.com/byte-care/care-sdk-go v0.0.0-20200903022539-c5c48e2351fe
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/mitchellh/mapstructure v1.3.2 // indirect
 	github.com/pelletier/go-toml v1.8.0 // indirect
 	github.com/spf13/afero v1.3.0 // indirect

@@ -2,15 +2,101 @@ package main
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"github.com/spf13/viper"
 	"io"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 
+	goupdate "github.com/inconshreveable/go-update"
 	"github.com/urfave/cli/v2"
 )
+
+func getRemoteVersion() (remoteVersion string, err error) {
+	osString := runtime.GOOS
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", "https://api.bytecare.xyz/bin", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	q := req.URL.Query()
+	q.Add("platform", osString)
+	req.URL.RawQuery = q.Encode()
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return "", errors.New("")
+	}
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	remoteVersion = string(respBody)
+
+	return
+}
+
+func getBinary(remoteVersion string) (reader io.ReadCloser, err error) {
+	client := &http.Client{}
+
+	url := fmt.Sprintf("https://bin.bytecare.xyz/%s/%s", runtime.GOOS, remoteVersion)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return
+	}
+
+	if resp.StatusCode != 200 {
+		return nil, errors.New("network error")
+	}
+
+	reader = resp.Body
+
+	return
+}
+
+func update() {
+	remoteVersion, err := getRemoteVersion()
+	if err != nil {
+		return
+	}
+
+	if remoteVersion != version {
+		println("ByteCare updating...")
+		reader, err := getBinary(remoteVersion)
+		if err != nil {
+			if reader != nil {
+				reader.Close()
+			}
+			return
+		}
+		defer reader.Close()
+
+		var options goupdate.Options
+		_ = goupdate.Apply(reader, options)
+	}
+}
 
 func index(c *cli.Context) (err error) {
 	token := c.String("token")
@@ -84,6 +170,8 @@ func index(c *cli.Context) (err error) {
 	}
 
 	logClient.CloseLog(err == nil)
+
+	update()
 
 	return nil
 }
