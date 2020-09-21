@@ -20,22 +20,10 @@ func init() {
 	}
 
 	configFilePath = path.Join(homeDir, ".carerc.yml")
-	if _, err := os.Stat(configFilePath); err == nil {
-
-	} else if os.IsNotExist(err) {
-		panic("Please use care-config to init the env. 😀")
-	} else {
-		panic(err)
-	}
 
 	viper.SetConfigName(".carerc") // name of config file (without extension)
 	viper.SetConfigType("yaml")    // REQUIRED if the config file does not have the extension in the name
 	viper.AddConfigPath("$HOME")   // call multiple times to add many search paths
-
-	err = viper.ReadInConfig() // Find and read the config file
-	if err != nil {            // Handle errors reading the config file
-		panic(err)
-	}
 }
 
 func initClient() (client *caresdk.Client, err error) {
@@ -69,6 +57,7 @@ func main() {
 		HelpName: "care",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{Name: "pro"},
+			&cli.StringFlag{Name: "token"},
 		},
 		Action:  index,
 		Version: version,

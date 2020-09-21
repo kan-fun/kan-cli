@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"github.com/spf13/viper"
 	"io"
 	"log"
 	"os"
@@ -12,6 +13,30 @@ import (
 )
 
 func index(c *cli.Context) (err error) {
+	token := c.String("token")
+	if token != "" {
+		viper.Set("token", token)
+
+		if err := viper.WriteConfigAs(configFilePath); err != nil {
+			panic(err)
+		}
+
+		return
+	}
+
+	if _, err := os.Stat(configFilePath); err == nil {
+
+	} else if os.IsNotExist(err) {
+		panic("Please use --token to set token. 😀")
+	} else {
+		panic(err)
+	}
+
+	err = viper.ReadInConfig() // Find and read the config file
+	if err != nil {            // Handle errors reading the config file
+		panic(err)
+	}
+
 	isPro := c.Bool("pro")
 
 	first := c.Args().First()

@@ -32,6 +32,9 @@ jobs:
     - name: Build
       run: go build -v .
 
+    - name: Test config token
+      run: ./test/main.sh
+
     - run: ./deploy.sh
       if: startsWith(github.event.ref, 'refs/tags')
       env: # Or as an environment variable
