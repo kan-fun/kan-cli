@@ -1,1 +1,1 @@
-[![](https://goreportcard.com/badge/github.com/kan-fun/kan-cli)](https://goreportcard.com/report/github.com/kan-fun/kan-cli)
+[![](https://goreportcard.com/badge/github.com/byte-care/care-cli)](https://goreportcard.com/report/github.com/byte-care/care-cli)

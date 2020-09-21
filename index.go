@@ -25,9 +25,9 @@ func index(c *cli.Context) (err error) {
 	}
 
 	if isPro {
-		log.Println("====🚀 kan Pro 🚀====")
+		log.Println("====🚀 care Pro 🚀====")
 	} else {
-		log.Println("====😃 kan Basic 😃====")
+		log.Println("====😃 care Basic 😃====")
 	}
 
 	cmd := exec.Command(first, tail...)
