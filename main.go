@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	care_sdk "github.com/byte-care/care-sdk-go"
+	caresdk "github.com/byte-care/care-sdk-go"
 	"github.com/spf13/viper"
 	"github.com/urfave/cli/v2"
 )
@@ -38,11 +38,11 @@ func init() {
 	}
 }
 
-func initClient() (client *care_sdk.Client, err error) {
+func initClient() (client *caresdk.Client, err error) {
 	AccessKey := viper.GetString("access-key")
 	SecretKey := viper.GetString("secret-key")
 
-	client, err = care_sdk.NewClient(AccessKey, SecretKey)
+	client, err = caresdk.NewClient(AccessKey, SecretKey)
 	if err != nil {
 		panic(err)
 	}
@@ -50,11 +50,11 @@ func initClient() (client *care_sdk.Client, err error) {
 	return
 }
 
-func initLogClient(topic string, isPro bool) (client *care_sdk.LogClient, err error) {
+func initLogClient(topic string, isPro bool) (client *caresdk.LogClient, err error) {
 	AccessKey := viper.GetString("access-key")
 	SecretKey := viper.GetString("secret-key")
 
-	client, err = care_sdk.NewLogClient(AccessKey, SecretKey, topic, isPro)
+	client, err = caresdk.NewLogClient(AccessKey, SecretKey, topic, isPro)
 	if err != nil {
 		panic(err)
 	}
