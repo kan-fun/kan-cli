@@ -99,9 +99,12 @@ func update() {
 }
 
 func index(c *cli.Context) (err error) {
-	token := c.String("token")
-	if token != "" {
-		viper.Set("token", token)
+	accessKey := c.String("access-key")
+	secretKey := c.String("secret-key")
+
+	if accessKey != "" && secretKey != "" {
+		viper.Set("access-key", accessKey)
+		viper.Set("secret-key", secretKey)
 
 		if err := viper.WriteConfigAs(configFilePath); err != nil {
 			panic(err)
@@ -119,7 +122,8 @@ func index(c *cli.Context) (err error) {
 	if _, err := os.Stat(configFilePath); err == nil {
 
 	} else if os.IsNotExist(err) {
-		panic("Please use --token to set token. 😀")
+		println("Please use --access-key and --secret-key to set token. 😀")
+		return err
 	} else {
 		panic(err)
 	}

@@ -58,7 +58,8 @@ func main() {
 		Flags: []cli.Flag{
 			&cli.BoolFlag{Name: "pro"},
 			&cli.BoolFlag{Name: "update"},
-			&cli.StringFlag{Name: "token"},
+			&cli.StringFlag{Name: "access-key"},
+			&cli.StringFlag{Name: "secret-key"},
 		},
 		Action:  index,
 		Version: version,
