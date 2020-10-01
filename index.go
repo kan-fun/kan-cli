@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	caresdk "github.com/byte-care/care-sdk-go"
 	"github.com/spf13/viper"
 	"io"
 	"io/ioutil"
@@ -13,6 +14,7 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"time"
 
 	goupdate "github.com/inconshreveable/go-update"
 	"github.com/urfave/cli/v2"
@@ -98,6 +100,38 @@ func update() {
 	}
 }
 
+func logChanHandler(logClient *caresdk.LogClient, logChan chan string) {
+	ticker := time.NewTicker(time.Second * 2)
+	defer ticker.Stop()
+
+	buffer := strings.Builder{}
+
+	for {
+		select {
+		case <-ticker.C:
+			{
+				if buffer.Len() != 0 {
+					logClient.PubLog(buffer.String())
+					buffer.Reset()
+				}
+			}
+		case s, ok := <-logChan:
+			{
+				if ok {
+					buffer.WriteString(s)
+					if buffer.Len() == 10 {
+						logClient.PubLog(buffer.String())
+						buffer.Reset()
+					}
+				} else {
+					return
+				}
+			}
+		}
+
+	}
+}
+
 func index(c *cli.Context) (err error) {
 	accessKey := c.String("access-key")
 	secretKey := c.String("secret-key")
@@ -151,6 +185,11 @@ func index(c *cli.Context) (err error) {
 		log.Println("====😃 care Basic 😃====")
 	}
 
+	logChan := make(chan string, 15)
+	defer close(logChan)
+
+	go logChanHandler(logClient, logChan)
+
 	cmd := exec.Command(first, tail...)
 
 	if isPro {
@@ -169,7 +208,7 @@ func index(c *cli.Context) (err error) {
 		for scanner.Scan() {
 			line := scanner.Text()
 			println(line)
-			logClient.PubLog(line)
+			logChan <- line
 		}
 
 		err = cmd.Wait()
