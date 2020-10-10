@@ -116,8 +116,9 @@ func logChanHandler(logClient *caresdk.LogClient, logChan chan string, done chan
 			}
 		case s, ok := <-logChan:
 			{
+				buffer.WriteString("\n")
 				buffer.WriteString(s)
-				if buffer.Len() == 10 {
+				if buffer.Len() == 20 {
 					logClient.PubLog(buffer.String())
 					buffer.Reset()
 				}
