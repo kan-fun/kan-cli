@@ -99,7 +99,7 @@ func update() {
 	}
 }
 
-func logChanHandler(logClient *caresdk.LogClient, logChan chan string) {
+func logChanHandler(logClient *caresdk.LogClient, logChan chan string, done chan int) {
 	ticker := time.NewTicker(time.Second * 2)
 	defer ticker.Stop()
 
@@ -123,11 +123,11 @@ func logChanHandler(logClient *caresdk.LogClient, logChan chan string) {
 				}
 
 				if !ok {
-					return
+					break
 				}
 			}
 		}
-
+		done <- 1
 	}
 }
 
@@ -180,9 +180,9 @@ func index(c *cli.Context) (err error) {
 	}
 
 	logChan := make(chan string, 15)
-	defer close(logChan)
 
-	go logChanHandler(logClient, logChan)
+	done := make(chan int)
+	go logChanHandler(logClient, logChan, done)
 
 	cmd := exec.Command(first, tail...)
 
@@ -213,8 +213,10 @@ func index(c *cli.Context) (err error) {
 	}
 
 	logClient.CloseLog(err == nil)
+	close(logChan)
 
 	update()
+	<-done
 
 	return nil
 }
