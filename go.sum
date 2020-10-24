@@ -30,6 +30,8 @@ github.com/byte-care/care-sdk-go v0.0.0-20201023153810-5552c7e9c4aa h1:nPQNo5qbS
 github.com/byte-care/care-sdk-go v0.0.0-20201023153810-5552c7e9c4aa/go.mod h1:P8fp6zknGiPe3AED7lITNnAKPmJqd1ZsrWQyOJShEbU=
 github.com/byte-care/care-sdk-go v0.0.0-20201024141133-18295b4f71df h1:RQmn85vnAAIqfupCoOpxM3EuWRzz+2A3yEEfDwdlSqU=
 github.com/byte-care/care-sdk-go v0.0.0-20201024141133-18295b4f71df/go.mod h1:P8fp6zknGiPe3AED7lITNnAKPmJqd1ZsrWQyOJShEbU=
+github.com/byte-care/care-sdk-go v0.0.0-20201024150207-5f506f949000 h1:Ooh5mgH7u67hTI0hJszZ2DjtV/Zki6LirANCLAkkMT4=
+github.com/byte-care/care-sdk-go v0.0.0-20201024150207-5f506f949000/go.mod h1:P8fp6zknGiPe3AED7lITNnAKPmJqd1ZsrWQyOJShEbU=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/coreos/bbolt v1.3.2/go.mod h1:iRUV2dpdMOn7Bo10OQBFzIJO9kkE559Wcmn+qkEiiKk=

@@ -3,7 +3,7 @@ module github.com/byte-care/care-cli
 go 1.14
 
 require (
-	github.com/byte-care/care-sdk-go v0.0.0-20201024141133-18295b4f71df
+	github.com/byte-care/care-sdk-go v0.0.0-20201024150207-5f506f949000
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
